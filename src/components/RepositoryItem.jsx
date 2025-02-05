@@ -1,15 +1,15 @@
 import { Text, StyleSheet, View } from 'react-native';
+import theme from './theme';
+const styles = StyleSheet.create({
+    item: {
+        fontSize: theme.fontSizes.body,
+    }
+});
 const RepositoryItem = ({ item }) => {
     return (
-        <View>
-            <Text>Full name: { item.fullName }</Text>
-            <Text>Description: { item.description }</Text>
-            <Text>Language: { item.language }</Text>
-            <Text>Stars: { item.stargazersCount }</Text>
-            <Text>Forks: { item.forksCount }</Text>
-            <Text>Reviews: { item.reviewCount }</Text>
-            <Text>Rating: { item.ratingAverage }</Text>
-        </View>
+        <Text style={styles.item}>{
+            `Full name: ${ item.fullName }\nDescription: ${ item.description }\nLanguage: ${ item.language }\nStars: ${ item.stargazersCount }\nForks: ${ item.forksCount }\nReviews: ${ item.reviewCount }\nRating: ${ item.ratingAverage }`
+        }</Text>
     );
 };
 
