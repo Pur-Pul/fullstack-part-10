@@ -1,5 +1,5 @@
-import { Text, StyleSheet, View, Image } from 'react-native';
-import theme from './theme';
+import { StyleSheet, View, Image } from 'react-native';
+import Text from './Text';
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "white",
@@ -10,30 +10,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         flexDirection:'row',
         alignSelf: 'flex-start'
-    },
-    name: {
-        fontSize: theme.fontSizes.subheading,
-        fontWeight: theme.fontWeights.bold,
-        color: theme.colors.textPrimary,
-        alignSelf: 'flex-start',
-    },
-    description: {
-        fontSize: theme.fontSizes.body,
-        fontWeight: theme.fontWeights.normal,
-        color: theme.colors.textSecondary,
-        alignSelf: 'flex-start',
-    },
-    language: {
-        fontSize: theme.fontSizes.subheading,
-        backgroundColor: theme.colors.primary,
-        color: theme.colors.inverted,
-        alignSelf: 'flex-start',
-        padding: 5,
-        marginTop: 5,
-        borderRadius:4,
-    },
-    details: {
-        marginLeft: 10
     },
     stat: {
         alignItems: 'center',
@@ -50,10 +26,10 @@ const styles = StyleSheet.create({
 
 const Details = ({ item }) => {
     return (
-        <View style={styles.details}>
-            <Text style={styles.name}>{`${ item.fullName }`}</Text>
-            <Text style={styles.description}>{`${ item.description }`}</Text> 
-            <Text style={styles.language}>{`${ item.language }`}</Text>
+        <View style={{marginLeft: 10}}>
+            <Text fontSize="subheading" fontWeight="bold" style={{alignSelf: 'flex-start'}}>{`${ item.fullName }`}</Text>
+            <Text fontSize="body" color="textSecondary" style={{alignSelf: 'flex-start'}}>{`${ item.description }`}</Text> 
+            <Text fontSize="subheading" fontWeight="bold" color="inverted" bgColor="primary" style={{alignSelf: 'flex-start', padding: 5, marginTop: 5, borderRadius: 4}}>{`${ item.language }`}</Text>
         </View>
     );
 };
@@ -61,8 +37,8 @@ const Details = ({ item }) => {
 const Stat = ({ stat }) => {
     return (
         <View style={styles.stat}>
-            <Text style={styles.name}>{stat.count < 1000 ? stat.count : Math.round(stat.count / 100) / 10 + "k"}</Text>
-            <Text style={styles.description}>{stat.name}</Text>
+            <Text fontSize="subheading" fontWeight="bold" style={{alignSelf: 'flex-start'}}>{stat.count < 1000 ? stat.count : Math.round(stat.count / 100) / 10 + "k"}</Text>
+            <Text fontSize="body" color="textSecondary" style={{alignSelf: 'flex-start'}}>{stat.name}</Text>
         </View>
     )
 };
