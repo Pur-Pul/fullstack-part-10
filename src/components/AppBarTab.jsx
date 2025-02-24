@@ -2,6 +2,7 @@ import { Pressable } from 'react-native';
 import Text from './Text';
 import { useNavigate } from 'react-router-native';
 
+
 const AppBarTab = ({ tab }) => {
     const navigate = useNavigate()
     return (
