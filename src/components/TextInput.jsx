@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
 });
 
 const TextInput = ({ error, style, ...props }) => {
-    const inputStyle = [styles.input, error && { borderColor: "red" }]
-    return (
+  const inputStyle = [styles.input, error && { borderColor: "red" }]
+  return (
     <View>
       <NativeTextInput style={inputStyle} {...props} />
       <Text style={{ marginLeft: 15, color: 'red' }}>{error}</Text>
