@@ -23,7 +23,7 @@ export const GET_REPOSITORIES = gql`
 export const GET_REPOSITORY = gql`
     query Repository($id: ID!) {
         repository(id: $id) {
-        stargazersCount
+            stargazersCount
             forksCount
             reviewCount
             ratingAverage
@@ -33,6 +33,20 @@ export const GET_REPOSITORY = gql`
             language
             id
             url
+            reviews {
+                edges {
+                    node {
+                        id
+                        text
+                        rating
+                        createdAt
+                        user {
+                            id
+                            username
+                        }
+                    }
+                }
+            }
         }
     }
 `

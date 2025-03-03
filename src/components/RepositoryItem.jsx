@@ -1,8 +1,9 @@
-import { StyleSheet, View, Image, Pressable } from 'react-native';
+import { FlatList, StyleSheet, View, Image, Pressable } from 'react-native';
 import Text from './Text';
 import useRepository from '../hooks/useRepository';
 import { useNavigate, useParams } from 'react-router-native';
 import * as Linking from 'expo-linking';
+import Review from './Review';
 
 const styles = StyleSheet.create({
     container: {
@@ -33,7 +34,10 @@ const styles = StyleSheet.create({
         margin: 15,
         borderRadius: 4,
         padding: 10
-    }
+    },
+    separator: {
+        height: 10
+    },
 });
 
 const Details = ({ item }) => {
@@ -64,32 +68,49 @@ const GitHub = ({ url }) => {
     );
 };
 
-const RepositoryItem = ({ item, display_github = false }) => {
-    const { id } = useParams()
+const RepositoryInfo = ({ item }) => {
     const navigate = useNavigate()
+    return (
+        <View style={styles.container}>
+            <Pressable onPress={() => navigate(`/repo/${item.id}`)}>
+                <View style={styles.image_container}>
+                    <Image style={styles.logo} source={{uri: item.ownerAvatarUrl}}></Image>
+                    <Details item={item}/>
+                </View>
+            </Pressable>
+            <Text>
+                <Stat stat={{count: item.stargazersCount, name: "Stars"}}/>
+                <Stat stat={{count: item.forksCount, name: "Forks"}}/>
+                <Stat stat={{count: item.reviewCount, name: "Reviews"}}/>
+                <Stat stat={{count: item.ratingAverage, name: "Rating"}}/>
+            </Text>
+            { item.url ? <GitHub url={ item.url }/> : null }
+        </View>
+    );
+}
+
+const RepositoryItem = ({ item }) => {
+    const { id } = useParams()
+    
     if (id) {
         result = useRepository(id)
         if (result.loading) { return <Text>Loading...</Text>}
         item = result.repository
     }
+    const reviewNodes = item.reviews ? item.reviews.edges.map(edge => edge.node) : [];
+    const ItemSeparator = () => <View style={styles.separator} />;
     return (
-    <View testID="repositoryItem" style={styles.container}>
-        <Pressable onPress={() => navigate(`/repo/${item.id}`)}>
-            <View style={styles.image_container}>
-                <Image style={styles.logo} source={{uri: item.ownerAvatarUrl}}></Image>
-                <Details item={item}/>
-            </View>
-        </Pressable>
-        <Text>
-            <Stat stat={{count: item.stargazersCount, name: "Stars"}}/>
-            <Stat stat={{count: item.forksCount, name: "Forks"}}/>
-            <Stat stat={{count: item.reviewCount, name: "Reviews"}}/>
-            <Stat stat={{count: item.ratingAverage, name: "Rating"}}/>
-        </Text>
-        { item.url ? <GitHub url={ item.url }/> : null }
+    <View testID="repositoryItem" style={{flex: 1}}>
+        <FlatList
+            data={reviewNodes}
+            ItemSeparatorComponent={ItemSeparator}
+            renderItem={({item}) => <Review review={item} />}
+            keyExtractor={item => item.id}
+            ListHeaderComponent={() => <RepositoryInfo item={item} />}
+        />
     </View>
-        
     );
 };
+
 
 export default RepositoryItem;
