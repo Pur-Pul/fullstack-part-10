@@ -34,22 +34,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const SignIn = () => {
-  const [signIn] = useSignIn();
-  const navigate = useNavigate();
-
-  const onSubmit = async (values) => {
-    console.log(values)
-    const { username, password } = values;
-      try {
-        const data = await signIn({ username, password });
-        console.log(data);
-        navigate('/')
-      } catch (e) {
-        console.log(e);
-      }
-  }
-
+export const SignInContainer = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -76,6 +61,24 @@ const SignIn = () => {
       </Pressable>
     </View>
   )
+};
+
+const SignIn = () => {
+  const [signIn] = useSignIn();
+  const navigate = useNavigate();
+
+  const onSubmit = async (values) => {
+    console.log(values)
+    const { username, password } = values;
+      try {
+        const data = await signIn({ username, password });
+        console.log(data);
+        navigate('/')
+      } catch (e) {
+        console.log(e);
+      }
+  }
+  return <SignInContainer onSubmit={ onSubmit } />;
 };
 
 export default SignIn;
