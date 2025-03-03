@@ -46,7 +46,7 @@ const Stat = ({ stat }) => {
 const RepositoryItem = ({ item }) => {
 
     return (
-    <View style={styles.container}>
+    <View testID="repositoryItem" style={styles.container}>
         <View style={styles.image_container}>
             <Image style={styles.logo} source={{uri: item.ownerAvatarUrl}}></Image>
             <Details item={item}/>
