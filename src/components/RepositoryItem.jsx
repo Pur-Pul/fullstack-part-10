@@ -1,5 +1,9 @@
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Pressable } from 'react-native';
 import Text from './Text';
+import useRepository from '../hooks/useRepository';
+import { useNavigate, useParams } from 'react-router-native';
+import * as Linking from 'expo-linking';
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "white",
@@ -21,12 +25,20 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 4
+    },
+    button: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        height: 50,
+        margin: 15,
+        borderRadius: 4,
+        padding: 10
     }
 });
 
 const Details = ({ item }) => {
     return (
-        <View style={{marginLeft: 10}}>
+        <View style={{marginLeft: 10, flexShrink: 1}}>
             <Text fontSize="subheading" fontWeight="bold" style={{alignSelf: 'flex-start'}}>{`${ item.fullName }`}</Text>
             <Text fontSize="body" color="textSecondary" style={{alignSelf: 'flex-start'}}>{`${ item.description }`}</Text> 
             <Text fontSize="subheading" fontWeight="bold" color="inverted" bgColor="primary" style={{alignSelf: 'flex-start', padding: 5, marginTop: 5, borderRadius: 4}}>{`${ item.language }`}</Text>
@@ -43,20 +55,38 @@ const Stat = ({ stat }) => {
     )
 };
 
-const RepositoryItem = ({ item }) => {
+const GitHub = ({ url }) => {
+    
+    return (
+        <View>
+            <Pressable onPress={() => Linking.openURL(url)}><Text fontSize="subheading" fontWeight="bold" color="inverted" bgColor="primary" style={ styles.button }>Open in GitHub</Text></Pressable>
+        </View>
+    );
+};
 
+const RepositoryItem = ({ item, display_github = false }) => {
+    const { id } = useParams()
+    const navigate = useNavigate()
+    if (id) {
+        result = useRepository(id)
+        if (result.loading) { return <Text>Loading...</Text>}
+        item = result.repository
+    }
     return (
     <View testID="repositoryItem" style={styles.container}>
-        <View style={styles.image_container}>
-            <Image style={styles.logo} source={{uri: item.ownerAvatarUrl}}></Image>
-            <Details item={item}/>
-        </View>
+        <Pressable onPress={() => navigate(`/repo/${item.id}`)}>
+            <View style={styles.image_container}>
+                <Image style={styles.logo} source={{uri: item.ownerAvatarUrl}}></Image>
+                <Details item={item}/>
+            </View>
+        </Pressable>
         <Text>
             <Stat stat={{count: item.stargazersCount, name: "Stars"}}/>
             <Stat stat={{count: item.forksCount, name: "Forks"}}/>
             <Stat stat={{count: item.reviewCount, name: "Reviews"}}/>
             <Stat stat={{count: item.ratingAverage, name: "Rating"}}/>
         </Text>
+        { item.url ? <GitHub url={ item.url }/> : null }
     </View>
         
     );
