@@ -32,6 +32,7 @@ const AppBar = () => {
         <View style={styles.flexcontainer}>
             <ScrollView contentContainerStyle={styles.flexchild} horizontal>
                 <AppBarTab tab={{name:"Repositories", dest:"/"}}/>
+                {user ?<AppBarTab tab={{name:"Create a review", dest:'/create-review'}} /> : null}
                 {user ? 
                     <AppBarTab tab={{name: "Sign out", dest:"/"}} onPress={signOut}/>
                     : 

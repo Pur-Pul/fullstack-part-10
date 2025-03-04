@@ -8,3 +8,10 @@ export const SIGN_IN = gql`
     }
 `;
 
+export const SUBMIT_REVIEW = gql`
+    mutation CreateReview($review: CreateReviewInput!) {
+        createReview(review: $review) {
+            repositoryId
+        }
+    }
+`
