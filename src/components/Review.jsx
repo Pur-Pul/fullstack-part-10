@@ -65,7 +65,6 @@ const Details = ({ name, createdAt, text }) => {
 };
 
 const Review = ({ review }) => {
-    console.log(review)
     return (
         <View style={styles.container}>
             <Score style={{flexShrink: 1}} score={ review.rating }></Score>
