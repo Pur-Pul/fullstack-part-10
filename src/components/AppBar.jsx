@@ -27,17 +27,17 @@ const AppBar = () => {
         apolloClient.resetStore();
     }
 
-    console.log(user)
     return ( 
         <View style={styles.flexcontainer}>
             <ScrollView contentContainerStyle={styles.flexchild} horizontal>
                 <AppBarTab tab={{name:"Repositories", dest:"/"}}/>
-                {user ?<AppBarTab tab={{name:"Create a review", dest:'/create-review'}} /> : null}
-                {user ? 
+                { user ?<AppBarTab tab={{name:"Create a review", dest:'/create-review'}} /> : null }
+                { user ? 
                     <AppBarTab tab={{name: "Sign out", dest:"/"}} onPress={signOut}/>
                     : 
                     <AppBarTab tab={{name:"Sign in", dest:"/sign-in"}} />
                 }
+                { user ? null : <AppBarTab tab={{name:"Sign up", dest:"/sign-up"}} /> }
             </ScrollView>
         </View>
     );
