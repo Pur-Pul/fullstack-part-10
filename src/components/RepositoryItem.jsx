@@ -4,6 +4,7 @@ import useRepository from '../hooks/useRepository';
 import { useNavigate, useParams } from 'react-router-native';
 import * as Linking from 'expo-linking';
 import Review from './Review';
+import ReviewList from './ReviewList';
 
 const styles = StyleSheet.create({
     container: {
@@ -98,19 +99,11 @@ const RepositoryItem = ({ item }) => {
         item = result.repository
     }
     const reviewNodes = item.reviews ? item.reviews.edges.map(edge => edge.node) : [];
-    const ItemSeparator = () => <View style={styles.separator} />;
     return (
     <View testID="repositoryItem" style={{flex: 1}}>
-        <FlatList
-            data={reviewNodes}
-            ItemSeparatorComponent={ItemSeparator}
-            renderItem={({item}) => <Review review={item} />}
-            keyExtractor={item => item.id}
-            ListHeaderComponent={() => <RepositoryInfo item={item} />}
-        />
+        <ReviewList reviewNodes={reviewNodes} header={<RepositoryInfo item={item} />}/>
     </View>
     );
 };
-
 
 export default RepositoryItem;

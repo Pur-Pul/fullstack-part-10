@@ -52,12 +52,12 @@ const Score = ({ score }) => {
     );
 };
 
-const Details = ({ name, createdAt, text }) => {
+const Details = ({ title, createdAt, text }) => {
     const [date,time] = createdAt.split('T')
     const [year, month, day] = date.split('-')
     return (
         <View style={{marginLeft: 10, flexShrink: 1}}>
-            <Text fontSize={'subheading'} fontWeight={'bold'}>{name}</Text>
+            <Text fontSize={'subheading'} fontWeight={'bold'}>{title}</Text>
             <Text>{format(new Date(year, month-1, day), 'dd.MM.yyyy')}</Text>
             <Text>{text}</Text>
         </View>
@@ -68,7 +68,7 @@ const Review = ({ review }) => {
     return (
         <View style={styles.container}>
             <Score style={{flexShrink: 1}} score={ review.rating }></Score>
-            <Details style={{flexShrink: 5}} name={ review.user.username } createdAt={ review.createdAt } text={ review.text }></Details>
+            <Details style={{flexShrink: 5}} title={ review.user ? review.user.username : review.repository.fullName } createdAt={ review.createdAt } text={ review.text }></Details>
         </View>
     );
 };
