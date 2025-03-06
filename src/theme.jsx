@@ -6,6 +6,7 @@ const theme = {
         textSecondary: '#586069',
         primary: '#0366d6',
         inverted: '#ffffff',
+        error: '#d73a4a'
     },
     fontSizes: {
         body: 14,

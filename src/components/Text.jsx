@@ -17,11 +17,17 @@ const styles = StyleSheet.create({
   colorInverted: {
     color: theme.colors.inverted
   },
+  colorError: {
+    color: theme.colors.error
+  },
   bgColorPrimary: {
     backgroundColor: theme.colors.primary,
   },
   bgColorInverted: {
     backgroundColor: theme.colors.inverted
+  },
+  bgColorError: {
+    backgroundColor: theme.colors.error
   },
   fontSizeSubheading: {
     fontSize: theme.fontSizes.subheading,
@@ -40,8 +46,10 @@ const Text = ({ color, bgColor, fontSize, fontWeight, style, ...props }) => {
     color === 'textSecondary' && styles.colorTextSecondary,
     color === 'primary' && styles.colorPrimary,
     color === 'inverted' && styles.colorInverted,
+    color === 'error' && styles.colorError,
     bgColor === 'primary' && styles.bgColorPrimary,
     bgColor === 'inverted' && styles.bgColorInverted,
+    bgColor === 'error' && styles.bgColorError,
     fontSize === 'subheading' && styles.fontSizeSubheading,
     fontSize === 'heading' && styles.fontSizeHeading,
     fontWeight === 'bold' && styles.fontWeightBold,

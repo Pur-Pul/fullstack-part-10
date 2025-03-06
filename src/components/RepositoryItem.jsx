@@ -31,10 +31,9 @@ const styles = StyleSheet.create({
     button: {
         textAlign: 'center',
         textAlignVertical: 'center',
-        height: 50,
         margin: 15,
         borderRadius: 4,
-        padding: 10
+        padding: 20
     },
     separator: {
         height: 10
@@ -46,7 +45,7 @@ const Details = ({ item }) => {
         <View style={{marginLeft: 10, flexShrink: 1}}>
             <Text fontSize="subheading" fontWeight="bold" style={{alignSelf: 'flex-start'}}>{`${ item.fullName }`}</Text>
             <Text fontSize="body" color="textSecondary" style={{alignSelf: 'flex-start'}}>{`${ item.description }`}</Text> 
-            <Text fontSize="subheading" fontWeight="bold" color="inverted" bgColor="primary" style={{alignSelf: 'flex-start', padding: 5, marginTop: 5, borderRadius: 4}}>{`${ item.language }`}</Text>
+            <Text fontSize="subheading" fontWeight="bold" color="inverted" bgColor="primary" style={{alignSelf: 'flex-start', marginTop: 5, padding: 5, paddingLeft:10, paddingRight:10, borderRadius: 4}}>{`${ item.language }`}</Text>
         </View>
     );
 };

@@ -27,10 +27,9 @@ const styles = StyleSheet.create({
   button: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    height: 50,
     margin: 15,
     borderRadius: 4,
-    padding: 10
+    padding: 20
   }
 });
 

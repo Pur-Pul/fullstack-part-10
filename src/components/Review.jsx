@@ -1,7 +1,9 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Pressable, Alert } from "react-native";
 import Text from "./Text";
 import theme from '../theme';
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
+import { format } from 'date-fns'
+import { useNavigate } from "react-router-native";
+import useDeleteReview from "../hooks/useDeleteReview";
 
 const styles = StyleSheet.create({
     container: {
@@ -24,10 +26,12 @@ const styles = StyleSheet.create({
     button: {
         textAlign: 'center',
         textAlignVertical: 'center',
-        height: 50,
-        margin: 15,
+        margin: 10,
         borderRadius: 4,
-        padding: 10
+        padding: 15,
+        paddingLeft: 25,
+        paddingRight: 25,
+
     },
     circle: {
         width: 50,
@@ -64,11 +68,41 @@ const Details = ({ title, createdAt, text }) => {
     );
 };
 
+const deleteAlert = (deleteReview, id) => Alert.alert('Delete review', 'Are you sure you want to delete this review?', [
+      {
+        text: 'CANCEL',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'DELETE', onPress: () => deleteReview(id)},
+    ]
+);
+
+const Actions = ({ review }) => {
+    const repository = review.repository
+    if (!repository) { return null }
+    const navigate = useNavigate()
+    const [deleteReview] = useDeleteReview()
+    return (
+        <View style={{flexDirection: 'row'}}>
+            <Pressable onPress={() => navigate(`/repo/${repository.id}`)}>
+                <Text fontSize="subheading" fontWeight="bold" color="inverted" bgColor="primary" style={ styles.button }>View repository</Text>
+            </Pressable>
+            <Pressable onPress={() => deleteAlert(deleteReview, review.id)}>
+                <Text fontSize="subheading" fontWeight="bold" color="inverted" bgColor="error" style={ styles.button }>Delete review</Text>
+            </Pressable>
+        </View>
+    )
+};
+
 const Review = ({ review }) => {
     return (
-        <View style={styles.container}>
-            <Score style={{flexShrink: 1}} score={ review.rating }></Score>
-            <Details style={{flexShrink: 5}} title={ review.user ? review.user.username : review.repository.fullName } createdAt={ review.createdAt } text={ review.text }></Details>
+        <View style={{... styles.container, padding: 0, flexDirection: 'column'}}>
+            <View style={styles.container}>
+                <Score style={{flexShrink: 1}} score={ review.rating }></Score>
+                <Details style={{flexShrink: 5}} title={ review.user ? review.user.username : review.repository.fullName } createdAt={ review.createdAt } text={ review.text }></Details>
+            </View>
+            <Actions review={review} />
         </View>
     );
 };
