@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const ReviewList = ({ reviewNodes, header=null }) => {
+const ReviewList = ({ reviewNodes, onEndReach, header=null }) => {
     const ItemSeparator = () => <View style={styles.separator} />;
     return(
         <FlatList
@@ -16,6 +16,8 @@ const ReviewList = ({ reviewNodes, header=null }) => {
             renderItem={({item}) => <Review review={item} />}
             keyExtractor={item => item.id}
             ListHeaderComponent={() => header}
+            onEndReached={onEndReach}
+            onEndReachedThreshold={0.5}
         />
     );
 };

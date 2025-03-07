@@ -91,16 +91,17 @@ const RepositoryInfo = ({ item }) => {
 
 const RepositoryItem = ({ item }) => {
     const { id } = useParams()
-    
-    if (id) {
-        result = useRepository(id)
-        if (result.loading) { return <Text>Loading...</Text>}
-        item = result.repository
-    }
-    const reviewNodes = item.reviews ? item.reviews.edges.map(edge => edge.node) : [];
+    const {repository, fetchMore, loading} = useRepository(id)
+    if (loading) { return <Text>Loading...</Text>}
+    if (repository) { item = repository }
+    const onEndReach = () => {
+        console.log('You have reached the end of the list');
+        fetchMore();
+    };
+    const reviewNodes = repository ? repository.reviews.edges.map(edge => edge.node) : [];
     return (
     <View testID="repositoryItem" style={{flex: 1}}>
-        <ReviewList reviewNodes={reviewNodes} header={<RepositoryInfo item={item} />}/>
+        <ReviewList reviewNodes={reviewNodes} onEndReach={onEndReach} header={<RepositoryInfo item={item} />}/>
     </View>
     );
 };

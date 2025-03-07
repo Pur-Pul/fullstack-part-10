@@ -62,39 +62,31 @@ export class RepositoryListContainer extends React.Component {
         renderItem={({item}) => <RepositoryItem item={item}/>}
         keyExtractor={item => item.id}
         ListHeaderComponent={this.renderHeader}
+        onEndReached={this.props.onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   }
 }
 
-/*
-export const RepositoryListContainer = ({ repositories, sort='CREATED_AT;DESC', setSort=()=>{} }) => {
-  const repositoryNodes = repositories ? repositories.edges.map(edge => edge.node) : [];
-  return (
-    <FlatList
-      data={repositoryNodes}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={({item}) => <RepositoryItem item={item}/>}
-      keyExtractor={item => item.id}
-      ListHeaderComponent={() => 
-        <Picker selectedValue={sort} onValueChange={(itemValue, itemIndex) => setSort(itemValue)}>
-          <Picker.Item label='Latest repositories' value='CREATED_AT;DESC' />
-          <Picker.Item label='Oldest repositories' value='CREATED_AT;ASC' />
-          <Picker.Item label='Highest rated repositories' value='RATING_AVERAGE;DESC' />
-          <Picker.Item label='Lowest rated repositories' value='RATING_AVERAGE;ASC' />
-        </Picker>
-      }
-    />
-  );
-}
-*/
 const RepositoryList = () => {
   const [sort, setSort] = useState('CREATED_AT;DESC')
   const [search, setSearch] = useState('')
   const [searchKeyword] = useDebounce(search, 500)
   const [orderBy, orderDirection] = sort.split(';')
-  const { repositories } = useRepositories({ orderBy, orderDirection, searchKeyword });
-  return <RepositoryListContainer repositories={ repositories } sort={sort} setSort={setSort} search={search} setSearch={setSearch}/>;
+  const { repositories, fetchMore } = useRepositories({ orderBy, orderDirection, searchKeyword });
+  const onEndReach = () => {
+    console.log('You have reached the end of the list');
+    fetchMore();
+  };
+  return <RepositoryListContainer 
+    repositories={ repositories }
+    sort={sort}
+    setSort={setSort}
+    search={search}
+    setSearch={setSearch}
+    onEndReach={onEndReach}
+  />;
   
 };
 

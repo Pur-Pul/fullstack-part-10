@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_REPOSITORIES = gql`
-    query Repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection $searchKeyword: String) {
-        repositories(orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
+    query Repositories($after: String, $orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection $searchKeyword: String) {
+        repositories(first: 7, after: $after orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
             edges {
                 node {
                     stargazersCount
@@ -16,12 +16,17 @@ export const GET_REPOSITORIES = gql`
                     id
                 }
             }
+            pageInfo {
+                endCursor
+                startCursor
+                hasNextPage
+            }
         }
     }
 `;
 
 export const GET_REPOSITORY = gql`
-    query Repository($id: ID!) {
+    query Repository($id: ID!, $after: String) {
         repository(id: $id) {
             stargazersCount
             forksCount
@@ -33,7 +38,7 @@ export const GET_REPOSITORY = gql`
             language
             id
             url
-            reviews {
+            reviews(first: 7, after: $after) {
                 edges {
                     node {
                         id
@@ -46,13 +51,17 @@ export const GET_REPOSITORY = gql`
                         }
                     }
                 }
+                pageInfo {
+                    endCursor
+                    startCursor
+                    hasNextPage
+                }
             }
         }
     }
 `
-
 export const GET_CURRENT_USER = gql`
-    query Me($includeReviews: Boolean = false){
+    query Me($includeReviews: Boolean = false) {
         me {
             id
             username
@@ -68,6 +77,11 @@ export const GET_CURRENT_USER = gql`
                             fullName
                         }
                     }
+                }
+                pageInfo {
+                    endCursor
+                    startCursor
+                    hasNextPage
                 }
             }
         }

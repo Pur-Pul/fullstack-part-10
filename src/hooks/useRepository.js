@@ -3,13 +3,34 @@ import { GET_REPOSITORY } from '../graphql/queries';
 
 
 const useRepository = (id) => {
-    const { data, loading, refetch } = useQuery(GET_REPOSITORY, { fetchPolicy: 'cache-and-network', variables: { id }});
+    if (!id) { return {repository: null, fetchMore: () => {}, loading: null} }
 
-    if (loading) {
-        return { data, loading, refetch }
-    }
+    const variables = { id }
+    const { data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORY, { fetchPolicy: 'cache-and-network', variables });
 
-    return { repository: data.repository, loading, refetch };
+    const handleFetchMore = () => {
+        const canFetchMore = !loading && data?.repository.reviews.pageInfo.hasNextPage;
+        if (!canFetchMore) {
+            console.log('can not fetch more')
+            return;
+        } else {
+            console.log('fetching more')
+        }
+    
+        fetchMore({
+            variables: {
+                after: data.repository.reviews.pageInfo.endCursor,
+                ...variables,
+            },
+        });
+    };
+
+    return {
+        repository: data?.repository,
+        fetchMore: handleFetchMore,
+        loading,
+        ...result,
+    };
 };
 
 export default useRepository;
